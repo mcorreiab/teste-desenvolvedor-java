@@ -2,7 +2,6 @@ package com.desafiobackend.backend.service;
 
 import com.desafiobackend.backend.model.User;
 import com.desafiobackend.backend.repository.UserRepository;
-import com.desafiobackend.backend.request.UserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +10,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserServicesApplication {
+public class UserApplicationService {
 
     private final UserRepository userRepository;
 

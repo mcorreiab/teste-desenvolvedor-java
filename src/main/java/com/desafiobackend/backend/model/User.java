@@ -1,12 +1,15 @@
 package com.desafiobackend.backend.model;
 
 import lombok.Builder;
-import org.springframework.data.annotation.Id;
+import lombok.Getter;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
+import java.util.List;
+
+@Getter
 @Builder
 @Document("user")
 public class User {
@@ -28,4 +31,6 @@ public class User {
 
     @NonNull
     private String email;
+
+    private List<Product> product;
 }

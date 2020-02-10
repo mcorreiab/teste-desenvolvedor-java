@@ -1,11 +1,29 @@
 package com.desafiobackend.backend.model;
 
+import lombok.*;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("userproducts")
+import java.time.LocalDateTime;
+
+@Setter
+@Builder
+@Getter
+@Document("user_product")
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserProducts {
+
+    @Id
+    private String id;
 
     private String idUser;
 
-    private String idProduct;
+    private String productName;
+
+    private Status status;
+
+    private LocalDateTime inscriptionDateTime;
+
+    private LocalDateTime cancelDateTime;
 }

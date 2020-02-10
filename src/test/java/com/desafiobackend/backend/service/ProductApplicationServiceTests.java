@@ -1,4 +1,4 @@
-package com.desafiobackend.backend.mapper;
+package com.desafiobackend.backend.service;
 
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -6,5 +6,5 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class MapperTests {
+public class ProductApplicationServiceTests {
 }
