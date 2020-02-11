@@ -19,8 +19,8 @@ public class UserController {
 
     private final UserRequestMapper userRequestMapper;
 
-    @GetMapping("/{userId}")
-    public User find(final String userId) {
+    @GetMapping("{userId}")
+    public User find(@PathVariable("userId") final String userId) {
         return userApplicationService.findUserById(userId)
                 .orElseThrow(UserNotFoundException::new);
     }
@@ -30,14 +30,14 @@ public class UserController {
         return userApplicationService.findAll();
     }
 
-    @PutMapping("/{userId}/update")
-    public User update(final UserRequest userRequest) {
+    @PutMapping("{userId}/update")
+    public User update(@PathVariable("userId") final UserRequest userRequest) {
         final User user = userRequestMapper.map(userRequest);
         return userApplicationService.updateUser(user);
     }
 
-    @DeleteMapping("/{userId}")
-    public void delete(final String userId) {
+    @DeleteMapping("{userId}")
+    public void delete(@PathVariable("userId") final String userId) {
         userApplicationService.deleteUser(userId);
     }
 

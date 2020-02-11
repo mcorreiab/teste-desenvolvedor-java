@@ -1,6 +1,7 @@
 package com.desafiobackend.backend.repository;
 
 import com.desafiobackend.backend.model.Product;
+import com.desafiobackend.backend.repository.custom.UserProductCustomRepository;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

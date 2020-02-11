@@ -1,5 +1,6 @@
 package com.desafiobackend.backend.service;
 
+import com.desafiobackend.backend.exception.ExistingCPFException;
 import com.desafiobackend.backend.model.User;
 import com.desafiobackend.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,9 @@ public class UserApplicationService {
     }
 
     public User insertUser(final User userRequest) {
-        return null;
+        if (userRepository.findUserByCPF(userRequest.getCpf()).isPresent()) {
+            throw new ExistingCPFException();
+        }
+        return userRepository.insert(userRequest);
     }
 }

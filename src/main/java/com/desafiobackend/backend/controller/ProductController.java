@@ -4,10 +4,7 @@ import com.desafiobackend.backend.model.Product;
 import com.desafiobackend.backend.model.User;
 import com.desafiobackend.backend.service.ProductApplicationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,18 +17,18 @@ public class ProductController {
 
     private final ProductApplicationService productApplicationService;
 
-    @PostMapping("/{product}/{userId}")
-    private void relateProduct(final Product product, final String userId) {
-        productApplicationService.relateProduct(product, userId);
+    @PostMapping("{product}/{userId}")
+    private void relateProduct(@PathVariable("product") final String productName, @PathVariable("userId") final String userId) {
+        productApplicationService.relateProduct(productName, userId);
     }
 
-    @GetMapping("/{product}")
-    private List<User> findUsersByProduct(final String product) {
+    @GetMapping("{product}")
+    private List<User> findUsersByProduct(@PathVariable("product") final String product) {
         return Collections.unmodifiableList(new ArrayList<>());
     }
 
-    @GetMapping
-    private List<Product> listProductsByUser() {
+    @GetMapping("{userId}")
+    private List<Product> listProductsByUser(@PathVariable("userId") final String userId) {
         return Collections.unmodifiableList(new ArrayList<>());
     }
 

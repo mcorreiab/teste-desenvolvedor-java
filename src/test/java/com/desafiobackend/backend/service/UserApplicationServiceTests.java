@@ -25,9 +25,24 @@ public class UserApplicationServiceTests {
     }
 
     @Test
+    public void givenAExistingUser_WhenRequestAUserUpdate_ThenUpdateUser() {
+
+    }
+
+    @Test
+    public void givenAExistingUser_WhenRequestAUserDelete_ThenDeleteUser() {
+
+    }
+
+    @Test
     public void givenUser_WhenIsInserted_ThenCanBeFound() {
         final User user = userApplicationService.findUserById(testUser.getId()).orElse(null);
         assertUser(user);
+    }
+
+    @Test
+    public void givenAExistingUser_WhenRequestANewUserWithSameCpf_ThenShouldThrowException() {
+
     }
 
     public void assertUser(final User user) {
