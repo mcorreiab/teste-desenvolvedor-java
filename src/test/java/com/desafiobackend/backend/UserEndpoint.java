@@ -1,6 +1,7 @@
 package com.desafiobackend.backend;
 
 import com.desafiobackend.backend.model.User;
+import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 
 import static io.restassured.RestAssured.given;
@@ -11,15 +12,18 @@ public final class UserEndpoint {
         return given()
                 .param("userId", userId)
                 .when()
-                .get("/users/{userId}")
+                .get("/users/"+userId)
                 .then();
     }
 
     public static ValidatableResponse updateUser(final String userId, final User user) {
-        return given().param("userId", userId)
+        return given()
+                .accept(ContentType.JSON)
+                .pathParam("userId", userId)
                 .body(user)
                 .when()
                 .put("/users/{userId}/update")
+//                .put("/users/"+userId+"/update")
                 .then();
     }
 
@@ -27,7 +31,7 @@ public final class UserEndpoint {
         return given()
                 .param("userId", userId)
                 .when()
-                .delete("/users/{userId}")
+                .delete("/users/"+userId)
                 .then();
     }
 

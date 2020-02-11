@@ -1,6 +1,7 @@
 package com.desafiobackend.backend.service;
 
 import com.desafiobackend.backend.exception.ExistingCPFException;
+import com.desafiobackend.backend.exception.UserNotFoundException;
 import com.desafiobackend.backend.model.User;
 import com.desafiobackend.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ public class UserApplicationService {
     private final UserRepository userRepository;
 
     public Optional<User> findUserById(final String userId) {
+        this.userExists(userId);
         return userRepository.findById(userId);
     }
 
@@ -23,11 +25,13 @@ public class UserApplicationService {
         return userRepository.findAll();
     }
 
-    public User updateUser(final User userRequest) {
+    public User updateUser(final String userId, final User userRequest) {
+        this.userExists(userId);
         return userRepository.save(userRequest);
     }
 
     public void deleteUser(final String userId) {
+        this.userExists(userId);
         userRepository.deleteById(userId);
     }
 
@@ -36,5 +40,11 @@ public class UserApplicationService {
             throw new ExistingCPFException();
         }
         return userRepository.insert(userRequest);
+    }
+
+    private void userExists(final String userId) {
+        if (!userRepository.findById(userId).isPresent()) {
+            throw new UserNotFoundException();
+        }
     }
 }

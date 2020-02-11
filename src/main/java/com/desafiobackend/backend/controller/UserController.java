@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api
+@Api("Users")
 @RestController
 @RequestMapping("users")
 @RequiredArgsConstructor
@@ -26,33 +26,33 @@ public class UserController {
     private final UserRequestMapper userRequestMapper;
 
     @GetMapping("{userId}")
-    @ApiOperation(value = "Find user by id")
+    @ApiOperation(value = "Find user by id", tags = "User")
     public User find(@PathVariable("userId") final String userId) {
         return userApplicationService.findUserById(userId)
                 .orElseThrow(UserNotFoundException::new);
     }
 
     @GetMapping
-    @ApiOperation(value = "Find all existing users")
+    @ApiOperation(value = "Find all existing users", tags = "User")
     public List<User> findAll() {
         return userApplicationService.findAll();
     }
 
     @PutMapping("{userId}/update")
-    @ApiOperation(value = "Updates an existing user")
+    @ApiOperation(value = "Updates an existing user", tags = "User")
     public User update(@PathVariable("userId") final String userId, final UserRequest userRequest) {
         final User user = userRequestMapper.map(userRequest);
-        return userApplicationService.updateUser(user);
+        return userApplicationService.updateUser(userId, user);
     }
 
     @DeleteMapping("{userId}")
-    @ApiOperation(value = "Delete an existing user")
+    @ApiOperation(value = "Delete an existing user", tags = "User")
     public void delete(@PathVariable("userId") final String userId) {
         userApplicationService.deleteUser(userId);
     }
 
     @PostMapping
-    @ApiOperation(value = "Insert a new user")
+    @ApiOperation(value = "Insert a new user", tags = "User")
     @ApiResponses({
             @ApiResponse(code = 200, message = "User successfully inserted", response = User.class),
             @ApiResponse(code = 409, message = "Cpf already exists", response = ExistingCPFException.class)
