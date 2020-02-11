@@ -8,8 +8,8 @@ public final class ProductEndpoint {
 
     public static ValidatableResponse relateProduct(final String productName, final String userId) {
         return given()
-                .param("product", productName)
-                .param("userId", userId)
+                .pathParam("product", productName)
+                .pathParam("userId", userId)
                 .when()
                 .post("/products/{product}/{userId}")
                 .then();
@@ -17,7 +17,7 @@ public final class ProductEndpoint {
 
     public static ValidatableResponse findUsersByProduct(final String product) {
         return given()
-                .param("product", product)
+                .pathParam("product", product)
                 .when()
                 .get("/products/{product}")
                 .then();
@@ -25,7 +25,7 @@ public final class ProductEndpoint {
 
     public static ValidatableResponse listProductsByUser(final String userId) {
         return given()
-                .param("userId", userId)
+                .pathParam("userId", userId)
                 .when()
                 .get("/products/{userId}")
                 .then();

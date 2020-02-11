@@ -13,8 +13,6 @@ import org.springframework.lang.Nullable;
 @NoArgsConstructor
 public class UserRequest {
 
-    private String id;
-
     @NonNull
     private String name;
 

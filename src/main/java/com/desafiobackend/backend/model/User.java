@@ -12,7 +12,7 @@ import java.util.List;
 
 @Getter
 @Builder
-@Document("user")
+@Document(collection = "user")
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {

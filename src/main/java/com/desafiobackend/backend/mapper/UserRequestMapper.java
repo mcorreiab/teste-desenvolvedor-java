@@ -9,7 +9,8 @@ public final class UserRequestMapper implements Mapper<User, UserRequest> {
 
     @Override
     public User map(final UserRequest userRequest) {
-        return User.builder().name(userRequest.getName())
+        return User.builder()
+                .name(userRequest.getName())
                 .cpf(userRequest.getCpf())
                 .contactNumber(userRequest.getContactNumber())
                 .address(userRequest.getAddress())

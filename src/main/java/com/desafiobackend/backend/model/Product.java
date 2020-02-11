@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-@Document("products")
+@Document(collection = "products")
 public class Product {
 
     private String id;

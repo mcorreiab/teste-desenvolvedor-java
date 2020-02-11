@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,13 +41,22 @@ public class UserController {
 
     @PutMapping("{userId}/update")
     @ApiOperation(value = "Updates an existing user", tags = "User")
-    public User update(@PathVariable("userId") final String userId, final UserRequest userRequest) {
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "User successfully inserted", response = User.class),
+            @ApiResponse(code = 404, message = "User Not Found", response = UserNotFoundException.class)
+    })
+    public User update(@PathVariable("userId") final String userId, @RequestBody final UserRequest userRequest) {
         final User user = userRequestMapper.map(userRequest);
         return userApplicationService.updateUser(userId, user);
     }
 
     @DeleteMapping("{userId}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT, reason = "User has been successfully deleted")
     @ApiOperation(value = "Delete an existing user", tags = "User")
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "User has been successfully deleted"),
+            @ApiResponse(code = 404, message = "User Not Found", response = UserNotFoundException.class)
+    })
     public void delete(@PathVariable("userId") final String userId) {
         userApplicationService.deleteUser(userId);
     }
@@ -57,7 +67,7 @@ public class UserController {
             @ApiResponse(code = 200, message = "User successfully inserted", response = User.class),
             @ApiResponse(code = 409, message = "Cpf already exists", response = ExistingCPFException.class)
     })
-    public User insert(final UserRequest userRequest) {
+    public User insert(@RequestBody final UserRequest userRequest) {
         final User newUser = userRequestMapper.map(userRequest);
         return userApplicationService.insertUser(newUser);
     }
