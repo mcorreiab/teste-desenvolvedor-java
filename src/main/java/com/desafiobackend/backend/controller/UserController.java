@@ -3,9 +3,11 @@ package com.desafiobackend.backend.controller;
 import com.desafiobackend.backend.exception.ExistingCPFException;
 import com.desafiobackend.backend.exception.UserNotFoundException;
 import com.desafiobackend.backend.mapper.UserRequestMapper;
+import com.desafiobackend.backend.model.Product;
 import com.desafiobackend.backend.model.User;
 import com.desafiobackend.backend.request.UserRequest;
 import com.desafiobackend.backend.service.UserApplicationService;
+import com.desafiobackend.backend.service.UserProductApplicationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -14,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @Api("Users")
@@ -25,6 +28,8 @@ public class UserController {
     private final UserApplicationService userApplicationService;
 
     private final UserRequestMapper userRequestMapper;
+
+    private final UserProductApplicationService userProductApplicationService;
 
     @GetMapping("{userId}")
     @ApiOperation(value = "Find user by id", tags = "User")
@@ -71,4 +76,11 @@ public class UserController {
         final User newUser = userRequestMapper.map(userRequest);
         return userApplicationService.insertUser(newUser);
     }
+
+    @GetMapping("{userId}/products")
+    @ApiOperation(value = "Find all products of a user", tags = "Products")
+    private List<Product> listProductsByUser(@PathVariable("userId") final String userId) {
+        return Collections.unmodifiableList(userProductApplicationService.findAllProductsUser(userId));
+    }
+
 }

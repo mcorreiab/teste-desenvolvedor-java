@@ -1,6 +1,8 @@
 package com.desafiobackend.backend.service;
 
+import com.desafiobackend.backend.model.Product;
 import com.desafiobackend.backend.model.Status;
+import com.desafiobackend.backend.model.User;
 import com.desafiobackend.backend.model.UserProducts;
 import com.desafiobackend.backend.repository.UserProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +10,7 @@ import lombok.val;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +31,14 @@ public class UserProductApplicationService {
         userProductRepository.insert(newUserProduct);
     }
 
+    public List<Product> findAllProductsUser(final String userId) {
+        return userProductRepository.findUserProducts(userId);
+    }
+
+    public List<User> findUsersOfProduct(final String productName) {
+        return userProductRepository.findUsersOfProduct(productName);
+    }
+
     private UserProducts buildUserProduct(final String userId, final String productName) {
         return UserProducts.builder()
                 .idUser(userId)
@@ -36,4 +47,5 @@ public class UserProductApplicationService {
                 .inscriptionDateTime(LocalDateTime.now())
                 .build();
     }
+    
 }

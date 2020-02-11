@@ -4,7 +4,7 @@ import io.restassured.response.ValidatableResponse;
 
 import static io.restassured.RestAssured.given;
 
-public final class ProductEndpoint {
+public final class ProductSubscriptionEndpoint {
 
     public static ValidatableResponse relateProduct(final String productName, final String userId) {
         return given()

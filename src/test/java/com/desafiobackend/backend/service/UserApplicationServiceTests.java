@@ -3,8 +3,7 @@ package com.desafiobackend.backend.service;
 import com.desafiobackend.backend.IntegrationTests;
 import com.desafiobackend.backend.UserEndpoint;
 import com.desafiobackend.backend.model.User;
-import com.desafiobackend.backend.repository.UserRepository;
-import com.desafiobackend.backend.request.UserRequest;
+import com.desafiobackend.backend.scenario.UserTestScenarioSchema;
 import io.restassured.RestAssured;
 import lombok.val;
 import org.assertj.core.api.Assertions;
@@ -32,18 +31,13 @@ public class UserApplicationServiceTests extends IntegrationTests {
     @Autowired
     private UserApplicationService userApplicationService;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    private User testUser;
-
     @LocalServerPort
     private int port;
 
     @Before
     public void setup() {
         RestAssured.port = port;
-        testUser = createUser();
+        testUser = userRepository.insert(UserTestScenarioSchema.createSpockUser());
     }
 
     @Test
@@ -58,22 +52,21 @@ public class UserApplicationServiceTests extends IntegrationTests {
 
     @Test
     public void givenAExistingUser_WhenRequestAUserUpdate_ThenUpdateUser() {
-        val updateUser = createUserRequest();
+        val updateUser = UserTestScenarioSchema.createSpockUserRequest();
 
-        val response = UserEndpoint.updateUser(testUser.getId(), updateUser)
+        val response = UserEndpoint.updateUser(testUser.getId(), UserTestScenarioSchema.createSpockUserRequest())
                 .extract()
                 .body()
                 .as(User.class);
 
-//        assertUserFieldByField(updateUser, response);
+        assertUserFieldByField(testUser, response);
     }
 
     @Test
     public void givenANonExistingUser_WhenRequestAUserUpdate_ThenReturnUserNotFound() {
         val randomId = "392870278";
-        val updateUser = createUserRequest();
 
-        UserEndpoint.updateUser(randomId, updateUser)
+        UserEndpoint.updateUser(randomId, UserTestScenarioSchema.createKirkUserRequest())
                 .statusCode(HttpStatus.NOT_FOUND.value())
                 .body("message", equalTo("User Not Found"));
     }
@@ -108,16 +101,10 @@ public class UserApplicationServiceTests extends IntegrationTests {
     public void givenUser_WhenIsInserted_ThenCanBeFound() throws Exception {
         final List<User> expectedUsers = new LinkedList<>();
         expectedUsers.add(testUser);
-        val newUser = User.builder()
-                .name("James Kirk")
-                .cpf("421.001.567-12")
-                .address("Enterprise Sky")
-                .email("kirk@enterprise")
-                .contactNumber("5551-1231")
-                .build();
+        val newUser = UserTestScenarioSchema.createKirkUser();
         expectedUsers.add(newUser);
 
-        UserEndpoint.insertUser(newUser)
+        UserEndpoint.insertUser(UserTestScenarioSchema.createKirkUserRequest())
                 .statusCode(HttpStatus.OK.value());
 
         final List<Map> response = UserEndpoint.getAllUsers()
@@ -134,7 +121,7 @@ public class UserApplicationServiceTests extends IntegrationTests {
 
     @Test
     public void givenAExistingUser_WhenRequestANewUserWithSameCpf_ThenShouldThrowException() {
-        UserEndpoint.insertUser(testUser)
+        UserEndpoint.insertUser(UserTestScenarioSchema.createSpockUserRequest())
                 .statusCode(HttpStatus.CONFLICT.value()).assertThat()
                 .body("message", equalTo("User with requested cpf already exists"));
     }
@@ -145,28 +132,6 @@ public class UserApplicationServiceTests extends IntegrationTests {
         Assertions.assertThat(expectedUser.getEmail()).isEqualTo(resultUser.getEmail());
         Assertions.assertThat(expectedUser.getContactNumber()).isEqualTo(resultUser.getContactNumber());
         Assertions.assertThat(expectedUser.getCpf()).isEqualTo(resultUser.getCpf());
-    }
-
-    public User createUser() {
-        val newUser = User.builder()
-                .name("Spock")
-                .cpf("794.066.530-87")
-                .address("Vulcano Street")
-                .email("spock@enterprise")
-                .contactNumber("5555-5555")
-                .build();
-
-        return userApplicationService.insertUser(newUser);
-    }
-
-    private UserRequest createUserRequest() {
-        return UserRequest.builder()
-                .name("Tenente Uhura")
-                .cpf("223.196.222-39")
-                .address("United States of Africa Street")
-                .email("uhura@enterprise")
-                .contactNumber("1234-5432")
-                .build();
     }
 
     @After

@@ -2,11 +2,14 @@ package com.desafiobackend.backend.repository.custom;
 
 import com.desafiobackend.backend.model.Product;
 import com.desafiobackend.backend.model.Status;
+import com.desafiobackend.backend.model.User;
 import com.desafiobackend.backend.model.UserProducts;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -28,6 +31,25 @@ public class UserProductCustomRepositoryImpl extends AbstractCustomRepository im
 
         return Optional.ofNullable(mongoTemplate.findOne(query, Product.class));
     }
+
+    @Override
+    public List<Product> findUserProducts(String userId) {
+        final Query query = new Query();
+        query.addCriteria(Criteria
+                .where("userId").is(userId));
+
+        return Collections.unmodifiableList(mongoTemplate.find(query, Product.class));
+    }
+
+    @Override
+    public List<User> findUsersOfProduct(String userId) {
+        final Query query = new Query();
+        query.addCriteria(Criteria
+                .where("userId").is(userId));
+
+        return Collections.unmodifiableList(mongoTemplate.find(query, User.class));
+    }
+
 
     private Query createQuery(final String userId, final String productName) {
         return new Query().addCriteria(createCriteria(userId, productName));

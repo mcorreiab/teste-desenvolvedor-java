@@ -1,6 +1,5 @@
 package com.desafiobackend.backend;
 
-import com.desafiobackend.backend.model.User;
 import com.desafiobackend.backend.request.UserRequest;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
@@ -26,12 +25,12 @@ public final class UserEndpoint {
 
     public static ValidatableResponse updateUser(final String userId, final UserRequest user) {
         return given()
-                .accept(ContentType.JSON)
                 .pathParam("userId", userId)
+                .accept(ContentType.JSON)
                 .with()
                 .body(user)
                 .when()
-                .put("/users/{userId}/update")
+                .put("/users/{userId}/update").peek()
                 .then();
     }
 
@@ -43,7 +42,7 @@ public final class UserEndpoint {
                 .then();
     }
 
-    public static ValidatableResponse insertUser(final User user) {
+    public static ValidatableResponse insertUser(final UserRequest user) {
         return given()
                 .contentType(ContentType.JSON)
                 .with()
