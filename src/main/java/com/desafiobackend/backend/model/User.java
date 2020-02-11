@@ -1,8 +1,9 @@
 package com.desafiobackend.backend.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.data.mongodb.core.index.Indexed;
+import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -12,9 +13,10 @@ import java.util.List;
 @Getter
 @Builder
 @Document("user")
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
-    @Indexed
     private String id;
 
     @NonNull

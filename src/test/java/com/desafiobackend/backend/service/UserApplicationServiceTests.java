@@ -25,24 +25,30 @@ public class UserApplicationServiceTests {
     }
 
     @Test
-    public void givenAExistingUser_WhenRequestAUserUpdate_ThenUpdateUser() {
+    public void givenAExistingUser_WhenRequestFindById_ThenRetrieveUser() {
+//        UserEndpoint.updateUser();
+    }
 
+    @Test
+    public void givenAExistingUser_WhenRequestAUserUpdate_ThenUpdateUser() {
+//        UserEndpoint.updateUser();
     }
 
     @Test
     public void givenAExistingUser_WhenRequestAUserDelete_ThenDeleteUser() {
-
+//        UserEndpoint.deleteUser();
     }
 
     @Test
     public void givenUser_WhenIsInserted_ThenCanBeFound() {
+//        UserEndpoint.insertUser();
         final User user = userApplicationService.findUserById(testUser.getId()).orElse(null);
         assertUser(user);
     }
 
     @Test
     public void givenAExistingUser_WhenRequestANewUserWithSameCpf_ThenShouldThrowException() {
-
+//        UserEndpoint.insertUser();
     }
 
     public void assertUser(final User user) {

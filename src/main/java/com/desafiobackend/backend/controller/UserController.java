@@ -40,7 +40,7 @@ public class UserController {
 
     @PutMapping("{userId}/update")
     @ApiOperation(value = "Updates an existing user")
-    public User update(@PathVariable("userId") final UserRequest userRequest) {
+    public User update(@PathVariable("userId") final String userId, final UserRequest userRequest) {
         final User user = userRequestMapper.map(userRequest);
         return userApplicationService.updateUser(user);
     }
