@@ -8,14 +8,14 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 @Getter
-@Document(collection = "user_product")
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserProducts {
+@Document(collection = "product_subscription")
+public class ProductSubscription {
 
     private String id;
 
-    private String idUser;
+    private String userId;
 
     private String productName;
 

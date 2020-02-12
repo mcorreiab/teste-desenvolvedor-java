@@ -20,4 +20,6 @@ public class Product {
     private String name;
 
     private LocalDateTime dateTime;
+
+    private Status status;
 }

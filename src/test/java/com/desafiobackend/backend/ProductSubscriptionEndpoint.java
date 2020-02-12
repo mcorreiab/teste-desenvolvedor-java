@@ -8,28 +8,34 @@ public final class ProductSubscriptionEndpoint {
 
     public static ValidatableResponse relateProduct(final String productName, final String userId) {
         return given()
-                .pathParam("product", productName)
+                .pathParam("productName", productName)
                 .pathParam("userId", userId)
                 .when()
-                .post("/products/{product}/{userId}")
+                .post("/products/{productName}/{userId}").peek()
                 .then();
     }
 
-    public static ValidatableResponse findUsersByProduct(final String product) {
+    public static ValidatableResponse listProductSubscribers(final String productName) {
         return given()
-                .pathParam("product", product)
+                .queryParam("productName", productName)
                 .when()
-                .get("/products/{product}")
+                .get("/products")
                 .then();
     }
 
-    public static ValidatableResponse listProductsByUser(final String userId) {
+    public static ValidatableResponse listAllUsers() {
+        return given()
+                .when()
+                .get("/products")
+                .then();
+    }
+
+    public static ValidatableResponse listUserProductSubscriptions(final String userId) {
         return given()
                 .pathParam("userId", userId)
                 .when()
-                .get("/products/{userId}")
+                .get("/products/{userId}/subscription")
                 .then();
     }
-
 
 }

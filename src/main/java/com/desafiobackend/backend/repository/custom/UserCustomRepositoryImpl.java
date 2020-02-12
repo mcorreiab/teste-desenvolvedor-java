@@ -5,6 +5,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -15,6 +17,13 @@ public class UserCustomRepositoryImpl extends AbstractCustomRepository implement
         final Query query = createQuery(userCpf);
         final User queryResult = mongoTemplate.findOne(query, User.class);
         return Optional.ofNullable(queryResult);
+    }
+
+    @Override
+    public List<User> findeUsersIn(List<String> users) {
+        final Query query = new Query();
+        query.addCriteria(Criteria.where("id").in(users));
+        return Collections.unmodifiableList(mongoTemplate.find(query, User.class));
     }
 
     private Query createQuery(final String userCpf) {

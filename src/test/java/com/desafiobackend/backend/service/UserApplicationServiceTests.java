@@ -3,12 +3,13 @@ package com.desafiobackend.backend.service;
 import com.desafiobackend.backend.IntegrationTests;
 import com.desafiobackend.backend.UserEndpoint;
 import com.desafiobackend.backend.model.User;
+import com.desafiobackend.backend.request.UserRequest;
 import com.desafiobackend.backend.scenario.UserTestScenarioSchema;
 import io.restassured.RestAssured;
 import lombok.val;
 import org.assertj.core.api.Assertions;
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,18 +51,36 @@ public class UserApplicationServiceTests extends IntegrationTests {
         assertUserFieldByField(testUser, response);
     }
 
+    @Ignore
     @Test
     public void givenAExistingUser_WhenRequestAUserUpdate_ThenUpdateUser() {
-        val updateUser = UserTestScenarioSchema.createSpockUserRequest();
+        val userRequest = UserTestScenarioSchema.createKirkUserRequest();
 
-        val response = UserEndpoint.updateUser(testUser.getId(), UserTestScenarioSchema.createSpockUserRequest())
+        val expectedUser = UserEndpoint.insertUser(userRequest)
+                .statusCode(HttpStatus.OK.value())
                 .extract()
-                .body()
                 .as(User.class);
 
-        assertUserFieldByField(testUser, response);
+        Assertions.assertThat(userRepository.findAll().size()).isEqualTo(2);
+        expectedUser.setAddress("new Address");
+
+        val newUserRequest = UserRequest.builder()
+                .name(expectedUser.getName())
+                .cpf(expectedUser.getCpf())
+                .contactNumber(expectedUser.getContactNumber())
+                .email(expectedUser.getEmail())
+                .address(expectedUser.getAddress())
+                .build();
+
+        val responseUser = UserEndpoint.updateUser(expectedUser.getId(), newUserRequest)
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(User.class);
+
+        assertUserFieldByField(responseUser, expectedUser);
     }
 
+    @Ignore
     @Test
     public void givenANonExistingUser_WhenRequestAUserUpdate_ThenReturnUserNotFound() {
         val randomId = "392870278";
@@ -126,16 +145,4 @@ public class UserApplicationServiceTests extends IntegrationTests {
                 .body("message", equalTo("User with requested cpf already exists"));
     }
 
-    public void assertUserFieldByField(final User expectedUser, final User resultUser) {
-        Assertions.assertThat(expectedUser.getName()).isEqualTo(resultUser.getName());
-        Assertions.assertThat(expectedUser.getAddress()).isEqualTo(resultUser.getAddress());
-        Assertions.assertThat(expectedUser.getEmail()).isEqualTo(resultUser.getEmail());
-        Assertions.assertThat(expectedUser.getContactNumber()).isEqualTo(resultUser.getContactNumber());
-        Assertions.assertThat(expectedUser.getCpf()).isEqualTo(resultUser.getCpf());
-    }
-
-    @After
-    public void clean() {
-        userRepository.deleteAll();
-    }
 }

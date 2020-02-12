@@ -42,6 +42,10 @@ public class UserApplicationService {
         return userRepository.insert(userRequest);
     }
 
+    public List<User> findAllById(List<String> users) {
+        return userRepository.findeUsersIn(users);
+    }
+
     private void userExists(final String userId) {
         if (!userRepository.findById(userId).isPresent()) {
             throw new UserNotFoundException();

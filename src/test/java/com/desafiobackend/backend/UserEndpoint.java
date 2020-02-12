@@ -23,14 +23,14 @@ public final class UserEndpoint {
                 .then();
     }
 
-    public static ValidatableResponse updateUser(final String userId, final UserRequest user) {
+    public static ValidatableResponse updateUser(String id, final UserRequest user) {
         return given()
-                .pathParam("userId", userId)
                 .accept(ContentType.JSON)
                 .with()
                 .body(user)
                 .when()
-                .put("/users/{userId}/update").peek()
+                .post("/users/{userId}/update", "userId")
+                .peek()
                 .then();
     }
 
